@@ -26,7 +26,7 @@ function clusterIcon(cluster) {
 }
 
 export default function DepotMapCard({ clusters }) {
-  const center = [40.7, 30.05]
+  const center = [39.93, 32.85]
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-5 text-left flex flex-col h-full">
