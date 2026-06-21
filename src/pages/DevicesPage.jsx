@@ -96,7 +96,11 @@ export default function DevicesPage() {
                     <div>
                       <p className="text-sm font-medium text-slate-800 leading-tight">{device.name}</p>
                       <p className="text-xs text-slate-400">
-                        {depot ? `${depot.name} — ${depot.location}` : 'Depo bulunamadı'}
+                        {depot
+                          ? depot.location
+                            ? `${depot.name} — ${depot.location}`
+                            : depot.name
+                          : 'Depo bulunamadı'}
                       </p>
                     </div>
                   </div>

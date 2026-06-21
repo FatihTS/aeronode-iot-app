@@ -21,7 +21,7 @@ export default function DepotsTable({ depots, onDelete }) {
   const [query, setQuery] = useState('')
 
   const filtered = depots.filter((depot) =>
-    `${depot.name} ${depot.location}`.toLowerCase().includes(query.toLowerCase()),
+    `${depot.name} ${depot.location ?? ''}`.toLowerCase().includes(query.toLowerCase()),
   )
 
   return (
@@ -69,7 +69,7 @@ export default function DepotsTable({ depots, onDelete }) {
                 <tr key={depot.id} className="border-b border-slate-50 last:border-0">
                   <td className="py-3 pr-4">
                     <p className="text-slate-800 font-medium leading-tight">{depot.name}</p>
-                    <p className="text-xs text-slate-400">{depot.location}</p>
+                    {depot.location && <p className="text-xs text-slate-400">{depot.location}</p>}
                   </td>
                   <td className="py-3 pr-4 w-40">
                     {depot.level == null ? (

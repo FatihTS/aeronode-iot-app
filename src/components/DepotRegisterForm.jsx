@@ -3,7 +3,6 @@ import { apiJson } from '../api/client'
 
 export default function DepotRegisterForm({ onRegistered, onClose }) {
   const [name, setName] = useState('')
-  const [location, setLocation] = useState('')
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -14,7 +13,7 @@ export default function DepotRegisterForm({ onRegistered, onClose }) {
     try {
       const { depot } = await apiJson('/depots', {
         method: 'POST',
-        body: JSON.stringify({ name: name.trim(), location: location.trim() }),
+        body: JSON.stringify({ name: name.trim() }),
       })
       onRegistered(depot)
     } catch (err) {
@@ -41,17 +40,6 @@ export default function DepotRegisterForm({ onRegistered, onClose }) {
             onChange={(e) => setName(e.target.value)}
             required
             placeholder="Depo 6"
-            className="w-full px-3 py-2.5 text-sm rounded-lg border border-slate-200 outline-none focus:border-blue-400"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm text-slate-600 mb-1.5">Konum</label>
-          <input
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-            placeholder="Sincan - Batı Bölgesi"
             className="w-full px-3 py-2.5 text-sm rounded-lg border border-slate-200 outline-none focus:border-blue-400"
           />
         </div>

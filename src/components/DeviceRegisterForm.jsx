@@ -50,7 +50,7 @@ export default function DeviceRegisterForm({ depots, onRegistered, onClose }) {
           >
             {depots.map((depot) => (
               <option key={depot.id} value={depot.id}>
-                {depot.name} — {depot.location}
+                {depot.location ? `${depot.name} — ${depot.location}` : depot.name}
               </option>
             ))}
           </select>
