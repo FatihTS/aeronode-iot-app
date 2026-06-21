@@ -91,6 +91,59 @@ export const depots = [
   },
 ]
 
+export const depotReports = [
+  {
+    id: 1,
+    name: 'Depo 1',
+    location: 'Gölbaşı - Çiftlik Alanı',
+    avgLevel: 84,
+    minLevel: 76,
+    maxLevel: 90,
+    alarmCount: 0,
+    consumption: 1240,
+  },
+  {
+    id: 2,
+    name: 'Depo 2',
+    location: 'Keçiören - Tepe Mahallesi',
+    avgLevel: 53,
+    minLevel: 45,
+    maxLevel: 60,
+    alarmCount: 1,
+    consumption: 1860,
+  },
+  {
+    id: 3,
+    name: 'Depo 3',
+    location: 'Kazan - Kuzey Bölgesi',
+    avgLevel: 23,
+    minLevel: 18,
+    maxLevel: 30,
+    alarmCount: 3,
+    consumption: 980,
+  },
+  {
+    id: 4,
+    name: 'Depo 4',
+    location: 'Çankaya - Merkez',
+    avgLevel: 9,
+    minLevel: 6,
+    maxLevel: 14,
+    alarmCount: 5,
+    consumption: 410,
+  },
+  {
+    id: 5,
+    name: 'Depo 5',
+    location: 'Polatlı - Güney Bölgesi',
+    avgLevel: 61,
+    minLevel: 50,
+    maxLevel: 70,
+    alarmCount: 1,
+    consumption: 1510,
+  },
+]
+
 export const mapClusters = [
   { id: 'c1', count: 3, status: 'normal', coords: [40.18, 32.45] },
   { id: 'c2', count: 3, status: 'normal', coords: [40.08, 33.35] },
