@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import StatCards from '../components/StatCards'
 import LevelDistributionCard from '../components/LevelDistributionCard'
@@ -5,17 +6,25 @@ import LevelHistoryCard from '../components/LevelHistoryCard'
 import DepotMapCard from '../components/DepotMapCard'
 import DepotsTable from '../components/DepotsTable'
 import AlarmsPanel from '../components/AlarmsPanel'
+import { apiJson } from '../api/client'
 import {
   summaryStats,
   levelDistribution,
   levelHistory,
-  depots,
   mapClusters,
   recentAlarms,
   systemStatus,
 } from '../data/mockData'
 
 export default function DashboardPage() {
+  const [depots, setDepots] = useState([])
+
+  useEffect(() => {
+    apiJson('/depots')
+      .then(({ depots: list }) => setDepots(list))
+      .catch(() => {})
+  }, [])
+
   return (
     <>
       <Header lastUpdate="20 Mayıs 2025 14:30" />

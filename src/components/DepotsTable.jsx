@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Search, ChevronDown, Battery, ArrowUp, ArrowDown } from 'lucide-react'
+import { Search, ChevronDown, Battery, ArrowUp, ArrowDown, Trash2 } from 'lucide-react'
 
 const statusStyles = {
   Normal: 'bg-emerald-100 text-emerald-600',
   Orta: 'bg-amber-100 text-amber-600',
   Düşük: 'bg-orange-100 text-orange-600',
   Kritik: 'bg-red-100 text-red-600',
+  'Veri Yok': 'bg-slate-100 text-slate-400',
 }
 
 const levelBarColors = {
@@ -13,9 +14,10 @@ const levelBarColors = {
   Orta: 'bg-emerald-500',
   Düşük: 'bg-amber-500',
   Kritik: 'bg-red-500',
+  'Veri Yok': 'bg-slate-200',
 }
 
-export default function DepotsTable({ depots }) {
+export default function DepotsTable({ depots, onDelete }) {
   const [query, setQuery] = useState('')
 
   const filtered = depots.filter((depot) =>
@@ -56,70 +58,87 @@ export default function DepotsTable({ depots }) {
               <th className="text-left font-medium pb-3 pr-4">Son Ölçüm</th>
               <th className="text-left font-medium pb-3 pr-4">Durum</th>
               <th className="text-left font-medium pb-3 pr-4">Pil</th>
-              <th className="text-left font-medium pb-3">Sinyal</th>
+              <th className="text-left font-medium pb-3 pr-4">Sinyal</th>
+              {onDelete && <th className="text-left font-medium pb-3">İşlem</th>}
             </tr>
           </thead>
           <tbody>
-            {filtered.map((depot) => (
-              <tr key={depot.id} className="border-b border-slate-50 last:border-0">
-                <td className="py-3 pr-4">
-                  <p className="text-slate-800 font-medium leading-tight">{depot.name}</p>
-                  <p className="text-xs text-slate-400">{depot.location}</p>
-                </td>
-                <td className="py-3 pr-4 w-40">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
-                      <div
-                        className={`h-full rounded-full ${levelBarColors[depot.status]}`}
-                        style={{ width: `${depot.level}%` }}
-                      />
-                    </div>
-                    <span className="text-slate-600 text-xs w-9 text-right">%{depot.level}</span>
-                  </div>
-                </td>
-                <td className="py-3 pr-4">
-                  <span
-                    className={`inline-flex items-center gap-1 text-xs font-medium ${
-                      depot.trend === 'up' ? 'text-emerald-500' : 'text-red-500'
-                    }`}
-                  >
-                    {depot.trend === 'up' ? <ArrowUp size={12} /> : <ArrowDown size={12} />}
-                    %{depot.change}
-                  </span>
-                </td>
-                <td className="py-3 pr-4 text-slate-500 text-xs">{depot.lastReading}</td>
-                <td className="py-3 pr-4">
-                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusStyles[depot.status]}`}>
-                    {depot.status}
-                  </span>
-                </td>
-                <td className="py-3 pr-4">
-                  <span className="inline-flex items-center gap-1.5 text-slate-500 text-xs">
-                    <Battery size={14} />
-                    %{depot.battery}
-                  </span>
-                </td>
-                <td className="py-3">
-                  <span className="inline-flex items-end gap-0.5 text-emerald-500">
-                    {[1, 2, 3, 4].map((bar) => (
+            {filtered.map((depot) => {
+              const status = depot.status ?? 'Veri Yok'
+              return (
+                <tr key={depot.id} className="border-b border-slate-50 last:border-0">
+                  <td className="py-3 pr-4">
+                    <p className="text-slate-800 font-medium leading-tight">{depot.name}</p>
+                    <p className="text-xs text-slate-400">{depot.location}</p>
+                  </td>
+                  <td className="py-3 pr-4 w-40">
+                    {depot.level == null ? (
+                      <span className="text-slate-400 text-xs">—</span>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                          <div
+                            className={`h-full rounded-full ${levelBarColors[status]}`}
+                            style={{ width: `${depot.level}%` }}
+                          />
+                        </div>
+                        <span className="text-slate-600 text-xs w-9 text-right">%{depot.level}</span>
+                      </div>
+                    )}
+                  </td>
+                  <td className="py-3 pr-4">
+                    {depot.change == null ? (
+                      <span className="text-slate-400 text-xs">—</span>
+                    ) : (
                       <span
-                        key={bar}
-                        className={`w-1 rounded-sm ${bar <= depot.signal ? 'bg-emerald-500' : 'bg-slate-200'}`}
-                        style={{ height: `${bar * 3 + 3}px` }}
-                      />
-                    ))}
-                  </span>
-                </td>
-              </tr>
-            ))}
+                        className={`inline-flex items-center gap-1 text-xs font-medium ${
+                          depot.trend === 'up' ? 'text-emerald-500' : 'text-red-500'
+                        }`}
+                      >
+                        {depot.trend === 'up' ? <ArrowUp size={12} /> : <ArrowDown size={12} />}
+                        %{depot.change}
+                      </span>
+                    )}
+                  </td>
+                  <td className="py-3 pr-4 text-slate-500 text-xs">{depot.last_reading ?? '—'}</td>
+                  <td className="py-3 pr-4">
+                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusStyles[status]}`}>
+                      {status}
+                    </span>
+                  </td>
+                  <td className="py-3 pr-4">
+                    <span className="inline-flex items-center gap-1.5 text-slate-500 text-xs">
+                      <Battery size={14} />
+                      {depot.battery == null ? '—' : `%${depot.battery}`}
+                    </span>
+                  </td>
+                  <td className="py-3 pr-4">
+                    <span className="inline-flex items-end gap-0.5 text-emerald-500">
+                      {[1, 2, 3, 4].map((bar) => (
+                        <span
+                          key={bar}
+                          className={`w-1 rounded-sm ${bar <= (depot.signal ?? 0) ? 'bg-emerald-500' : 'bg-slate-200'}`}
+                          style={{ height: `${bar * 3 + 3}px` }}
+                        />
+                      ))}
+                    </span>
+                  </td>
+                  {onDelete && (
+                    <td className="py-3">
+                      <button
+                        type="button"
+                        onClick={() => onDelete(depot)}
+                        className="text-slate-300 hover:text-red-500"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              )
+            })}
           </tbody>
         </table>
-      </div>
-
-      <div className="text-center mt-4">
-        <button type="button" className="text-blue-600 text-sm font-medium hover:underline">
-          Tüm depoları görüntüle →
-        </button>
       </div>
     </div>
   )
